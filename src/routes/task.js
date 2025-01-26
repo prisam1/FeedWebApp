@@ -10,6 +10,7 @@ const router = express.Router();
 
 router.use(authMiddleware);
 
+//--------------------------------------------
 router.post("/", createTask);
 router.get("/", getTasks);
 router.put("/:id", updateTask);

@@ -1,6 +1,7 @@
 const Post = require("../models/Post");
 const cloudinary = require("../config/cloudinary");
 
+//Create Post
 exports.createPost = async (req, res) => {
   try {
     const { caption, photo } = req.body;
@@ -22,6 +23,7 @@ exports.createPost = async (req, res) => {
   }
 };
 
+//Get Post
 exports.getPosts = async (req, res) => {
   try {
     const posts = await Post.find();

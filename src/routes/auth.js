@@ -17,6 +17,7 @@ const passport = require("passport");
 
 const router = express.Router();
 
+//------------------------------------
 router.post("/register", register);
 router.post("/login", login);
 router.post("/logout", logout);
@@ -32,11 +33,5 @@ router.get(
   passport.authenticate("google", { failureRedirect: "/login-failure" }),
   googleCallback
 );
-
-// Get the current logged-in user
-router.get("/user", authMiddleware, getCurrentUser);
-
-// Logout the user
-router.post("/googleLogout", googleLogout);
 
 module.exports = router;

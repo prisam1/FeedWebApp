@@ -6,6 +6,7 @@ const { setAuthCookies } = require("../helper/auth.helper");
 const { generateRandomSixDigit } = require("../helper/generateOtp.helper");
 const { sendMail } = require("../utils/nodemailer");
 
+//Create User
 exports.register = async (req, res) => {
   const { name, email, password } = req.body;
 
@@ -23,6 +24,7 @@ exports.register = async (req, res) => {
   }
 };
 
+//Log in User
 exports.login = async (req, res) => {
   const { email, password } = req.body;
 
@@ -49,11 +51,13 @@ exports.login = async (req, res) => {
   }
 };
 
+//logout User
 exports.logout = async (req, res) => {
   res.clearCookie("access_token");
   return res.status(200).json({ message: "Logged out successfully" });
 };
 
+//get User
 exports.user = async (req, res) => {
   const { email } = req.body;
   const user = await User.findOne({ email });
@@ -64,6 +68,7 @@ exports.user = async (req, res) => {
   res.status(200).json(user);
 };
 
+//forgot Password -> otp will be send
 exports.forgotPassword = async (req, res) => {
   const { email } = req.body;
 
@@ -91,6 +96,8 @@ exports.forgotPassword = async (req, res) => {
   }
 };
 
+
+//forgot Password OTP confirmation
 exports.forgotPasswordOTP = async (req, res) => {
   const { email, otp } = req.body;
 
@@ -117,6 +124,7 @@ exports.forgotPasswordOTP = async (req, res) => {
   }
 };
 
+//set new password
 exports.setNewPassword = async (req, res) => {
   const { email, password } = req.body;
 

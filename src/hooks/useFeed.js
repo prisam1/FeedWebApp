@@ -12,7 +12,8 @@ export const useCreatePost = (fetchPosts) => {
     try {
       const data = await createPost(formData);
       toast.success("Post created successfully!");
-      // Fetch posts again to update the feed
+
+      // Refresh the posts feed
       if (fetchPosts) {
         fetchPosts();
       }

@@ -5,31 +5,41 @@ import { toast } from "sonner";
 
 export const Feed = () => {
   const [caption, setCaption] = useState("");
-  const [photo, setPhoto] = useState(null);
+  const [photoBase64, setPhotoBase64] = useState(null);
+
   const [preview, setPreview] = useState(null);
 
-  const { posts, loading, fetchPosts} = usePosts();
+  const { posts, loading, fetchPosts } = usePosts();
   const { handleCreatePost, loading: createPostLoading } =
     useCreatePost(fetchPosts);
 
   const addPost = async (e) => {
     e.preventDefault();
-    const formData = new FormData();
-    formData.append("photo", photo);
-    formData.append("caption", caption);
 
-    await handleCreatePost(formData);
+    if (!photoBase64) {
+      toast.error("Please select an image.");
+      return;
+    }
+
+    const postData = { photo: photoBase64, caption };
+
+    await handleCreatePost(postData);
     setCaption("");
-    setPhoto(null);
+    setPhotoBase64(null);
     setPreview(null);
   };
 
+  // Convert selected image file to Base64
   const handleFileSelect = (e) => {
     const file = e.target.files[0];
 
     if (file && file.type.startsWith("image/")) {
-      setPhoto(file);
-      setPreview(URL.createObjectURL(file)); // Generate a preview URL 
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onloadend = () => {
+        setPhotoBase64(reader.result); // Save Base64 string
+        setPreview(URL.createObjectURL(file)); // Show image preview
+      };
     } else {
       toast.error("Only image files are allowed.");
     }

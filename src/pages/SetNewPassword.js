@@ -35,7 +35,7 @@ export const SetNewPassword = () => {
   };
 
   return (
-    <div className="flex flex-col h-[90vh] items-center justify-center bg-slate-200 w-full lg:p-8 p-4">
+    <div className="flex flex-col h-[90vh] items-center justify-center w-full lg:p-8 p-4">
       <div className="flex flex-col mt-0 w-full max-w-md">
         <h2 className="text-[8vw] md:text-[32px] mt-[8vw] md:mt-[0px] font-bold text-[#0040FF] dark:text-foreground">
           Change Your Password.

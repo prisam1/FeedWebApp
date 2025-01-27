@@ -28,6 +28,8 @@ exports.register = async (req, res) => {
 exports.login = async (req, res) => {
   const { email, password } = req.body;
 
+  const isMobile = req.headers["user-agent"].includes("Mobi");
+  let access_token = null;
   try {
     const user = await User.findOne({ email });
     if (!user || !(await bcrypt.compare(password, user.password))) {
@@ -41,11 +43,19 @@ exports.login = async (req, res) => {
       }
     );
 
-    setAuthCookies(res, token);
+    // Set token in cookies for desktop, return token for mobile
+    setAuthCookies(res, token, isMobile);
+
+    //access token only send for mobile
+    if (isMobile) {
+      access_token = token;
+    }
 
     const userData = { name: user.name, email: user.email };
 
-    res.status(200).json({ message: "Login successful", userData });
+    res
+      .status(200)
+      .json({ message: "Login successful", userData, access_token });
   } catch (err) {
     res.status(400).json({ error: err.message });
   }
@@ -95,7 +105,6 @@ exports.forgotPassword = async (req, res) => {
       .json({ error: "An error occurred. Please try again later." });
   }
 };
-
 
 //forgot Password OTP confirmation
 exports.forgotPasswordOTP = async (req, res) => {

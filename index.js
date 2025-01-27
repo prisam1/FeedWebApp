@@ -15,6 +15,8 @@ app.use(
   cors({
     origin: "https://feedtask.netlify.app",
     credentials: true,
+    methods: ["GET", "POST", "PATCH", "DELETE"], // Allowed HTTP methods
+    allowedHeaders: ["Content-Type", "Authorization"], // Allow Authorization header
   })
 );
 app.use(express.json({ limit: "10mb" }));

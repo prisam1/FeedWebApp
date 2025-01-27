@@ -18,7 +18,7 @@ const ProtectedRoutes = () => {
 
   return (
     <>
-      <div className="fixed top-0 left-0 w-full z-50">
+      <div className="fixed top-0 left-0 lg:w-full w-full z-50">
         <Header />
       </div>
       <Outlet />

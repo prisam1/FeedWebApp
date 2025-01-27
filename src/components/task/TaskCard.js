@@ -18,17 +18,17 @@ export const TaskCard = ({ task, deleteTask }) => {
   return (
     <div
       ref={drag}
-      className="cursor-move rounded-2xl bg-amber-400 px-2 py-2 mb-2 flex flex-row w-full justify-between"
+      className="cursor-move lg:rounded-2xl rounded-xl bg-amber-400 lg:px-2 px-1 py-2 lg:mb-2 mb-1 flex flex-row w-full justify-between"
     >
-      <div className="px-2">
-        <h4 className="font-semibold leading-none">{task.name}</h4>
-        <p className="text-sm mt-2 leading-none">{task.description}</p>
+      <div className="lg:px-2 px-1">
+        <h4 className="font-semibold leading-none lg:text-base text-xs">{task.name}</h4>
+        <p className="lg:text-sm mt-2 leading-none text-[10px]">{task.description}</p>
       </div>
       <button
         onClick={handleDeleteTask}
-        className="self-start border-[2px] ml-2 border-black rounded-full"
+        className="self-start lg:border-[2px] border-[1px] ml-2 border-black rounded-full"
       >
-        <X className="w-4 h-4 " />
+        <X className="lg:w-4 lg:h-4 w-2.5 h-2.5" />
       </button>
     </div>
   );

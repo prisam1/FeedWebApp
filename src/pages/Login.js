@@ -13,6 +13,7 @@ export const Login = () => {
 
   const onSubmit = async (e) => {
     e.preventDefault();
+
     await handleLogin(formData.email, formData.password);
   };
 

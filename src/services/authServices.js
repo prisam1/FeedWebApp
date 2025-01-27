@@ -1,7 +1,6 @@
 import api from "./api";
 import { isMobile } from "../utils/detectDevice";
 
-
 // Authentication APIs
 export const register = async (name, email, password) => {
   const { data } = await api.post("/auth/register", { name, email, password });
@@ -10,10 +9,9 @@ export const register = async (name, email, password) => {
 
 export const login = async (email, password) => {
   const { data } = await api.post("/auth/login", { email, password });
-
-  // if (isMobile()) {
-  //   localStorage.setItem("authToken", data.token); // Store token in localStorage for mobile
-  // }
+  if (isMobile() && data.access_token) {
+    localStorage.setItem("authToken", data.access_token); // Store token in localStorage for mobile
+  }
   return data;
 };
 
@@ -49,14 +47,4 @@ export const googleAuth = async (credential, action) => {
   });
 
   return response.data;
-};
-
-// Get Authentication Token
-export const getAuthToken = () => {
-  return isMobile()
-    ? localStorage.getItem("authToken") // Get from localStorage on mobile
-    : document.cookie
-        .split("; ")
-        .find((row) => row.startsWith("authToken="))
-        ?.split("=")[1]; // Get from cookies on desktop
 };

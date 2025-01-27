@@ -51,16 +51,16 @@ export const Feed = () => {
 
   return (
     <div className="w-full pb-20">
-      <h1 className="text-blue-600 text-2xl font-semibold">Feed</h1>
+      <h1 className="text-blue-600 lg:text-2xl text-lg font-semibold">Feed</h1>
 
-      <form onSubmit={addPost} className="flex flex-col gap-2 mt-2">
-        <div className="relative w-full max-w-xl">
+      <form onSubmit={addPost} className="flex flex-col gap-2 mt-2 w-full">
+        <div className="relative w-full lg:max-w-xl max-w-52">
           <textarea
             type="text"
             placeholder="Enter a caption"
             rows="5"
             value={caption}
-            className="w-full px-4 pt-2 pb-11 max-w-xl border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full lg:px-4 px-2 lg:pt-2 pt-1 pb-11 lg:max-w-xl max-w-52  border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             onChange={(e) => setCaption(e.target.value)}
             required
           />
@@ -68,9 +68,9 @@ export const Feed = () => {
             <button
               type="button"
               onClick={triggerFileInput}
-              className="py-2 px-2 rounded"
+              className="lg:py-2 lg:px-2"
             >
-              <ImagePlus className="w-7 h-7" />
+              <ImagePlus className="lg:w-7 lg:h-7" />
             </button>
 
             <input
@@ -93,7 +93,7 @@ export const Feed = () => {
         </div>
         <button
           type="submit"
-          className="h-10 px-4 py-2 w-24 bg-purple-500 rounded-md text-white"
+          className="lg:h-10 px-4 py-2 lg:w-24 bg-purple-500 rounded-md text-white"
         >
           {createPostLoading ? "Posting..." : "Post"}
         </button>
@@ -108,7 +108,9 @@ export const Feed = () => {
                 alt={post.caption}
                 className="w-full max-w-md rounded-sm"
               />
-              <p className="font-semibold mb-4">{post.caption}</p>
+              <p className="font-semibold mb-4 lg:text-base  text-xs">
+                {post.caption}
+              </p>
             </div>
           );
         })}

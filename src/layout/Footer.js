@@ -2,7 +2,7 @@ import React from "react";
 
 export const Footer = () => {
   return (
-    <div className="flex items-center flex-col bg-slate-200 justify-between xl:gap-5 h-30 py-2 px-10 w-full border-t-[2px] border-gray-300">
+    <div className="flex items-center flex-col bg-slate-200 justify-between xl:gap-5 h-[10vh] py-2 px-10 w-full border-t-[2px] border-gray-300">
       <div className="flex flex-row justify-between w-full">
         <h2 className="font-serif font-bold text-2xl">Feed</h2>
 

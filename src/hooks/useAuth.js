@@ -145,8 +145,7 @@ export const useResetPassword = () => {
       toast.success("Password successfully changed");
       if (isAuthenticated) {
         navigate("/home", { replace: true });
-      } else {
-        dispatch(logoutAction());
+      } else { 
         navigate("/login", { replace: true });
       }
       return data;

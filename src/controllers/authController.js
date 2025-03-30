@@ -186,7 +186,7 @@ exports.googleCallback = (req, res) => {
   setAuthCookies(res, token, isMobile);
 
   res.redirect(
-    `${FRONT_URL}/home?name=${encodeURIComponent(
+    `${process.env.FRONT_URL}/home?name=${encodeURIComponent(
       req.user.displayName
     )}&email=${encodeURIComponent(req.user.emails[0].value)}`
   );

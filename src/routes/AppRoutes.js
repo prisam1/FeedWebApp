@@ -1,6 +1,6 @@
 import React from "react";
 import {
-  createBrowserRouter,
+  createHashRouter,
   RouterProvider,
   Navigate,
 } from "react-router-dom";
@@ -14,12 +14,12 @@ const AppRoutes = () => {
   const auth = useSelector(AuthSelector);
   const isAuthenticated = auth.isAuthenticated ?? false;
 
-  const routes = createBrowserRouter([
+  const routes = createHashRouter([
     {
       path: "/",
       element: isAuthenticated ? (
         <Navigate to="/home" replace />
-      ) : (
+      ) : ( 
         <Navigate to="/login" replace />
       ),
       errorElement: <ErrorBoundary />,

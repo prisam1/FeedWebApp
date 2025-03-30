@@ -40,11 +40,8 @@ export const getUserData = async (email) => {
   return response.data;
 };
 
-export const googleAuth = async (credential, action) => {
-  const response = await api.post(`/auth/google`, {
-    credential,
-    action,
-  });
+export const googleAuth = async () => {
+  const response = await api.get("/auth/google");
 
   return response.data;
 };

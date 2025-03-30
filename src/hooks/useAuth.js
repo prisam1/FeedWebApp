@@ -146,6 +146,7 @@ export const useResetPassword = () => {
       if (isAuthenticated) {
         navigate("/home", { replace: true });
       } else {
+        dispatch(logoutAction());
         navigate("/login", { replace: true });
       }
       return data;
@@ -219,7 +220,7 @@ export const useGoogleAuth = () => {
     setError(null);
 
     try {
-      const response = await googleAuth(credential, action);
+      const response = await googleAuth();
       const { user } = response.data;
 
       dispatch(setUserDetails(user));

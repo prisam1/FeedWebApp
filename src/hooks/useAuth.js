@@ -219,7 +219,7 @@ export const useGoogleAuth = () => {
     setError(null);
 
     try {
-      const response = googleAuth(credential, action);
+      const response = await googleAuth(credential, action);
       const { user } = response.data;
 
       dispatch(setUserDetails(user));

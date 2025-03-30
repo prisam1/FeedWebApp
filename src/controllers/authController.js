@@ -36,7 +36,7 @@ exports.login = async (req, res) => {
       return res.status(401).json({ error: "Invalid credentials" });
     }
     const token = jwt.sign(
-      { id: user._id, name: user.name },
+      { id: user._id, name: user.name, email: email },
       process.env.JWT_SECRET,
       {
         expiresIn: "1d",
@@ -159,13 +159,17 @@ exports.setNewPassword = async (req, res) => {
 
 // Redirect to Google login
 exports.googleLogin = (req, res) => {
-  res.redirect("/auth/google");
+  passport.authenticate("google", { scope: ["profile", "email"] })(
+    req,
+    res,
+    next
+  );
 };
 
 // Handle Google callback
 exports.googleCallback = (req, res) => {
   const user = req.user;
-
+  const isMobile = req.headers["user-agent"].includes("Mobi");
   // Generate a JWT for the user
   const token = jwt.sign(
     {
@@ -178,8 +182,14 @@ exports.googleCallback = (req, res) => {
     { expiresIn: "1d" }
   );
 
-  // Optionally, set the token in cookies or redirect with the token
-  res.status(201).json({ message: "Google login successful", user, token });
+  // Set token in cookies for desktop, return token for mobile
+  setAuthCookies(res, token, isMobile);
+
+  res.redirect(
+    `${FRONT_URL}/home?name=${encodeURIComponent(
+      req.user.displayName
+    )}&email=${encodeURIComponent(req.user.emails[0].value)}`
+  );
 };
 
 // Get the current user

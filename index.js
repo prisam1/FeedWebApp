@@ -9,8 +9,7 @@ const authRoutes = require("./src/routes/auth");
 const taskRoutes = require("./src/routes/task");
 const postRoutes = require("./src/routes/post");
 
-const app = express();
-//app.use(cors());
+const app = express(); 
 app.use(
   cors({
     origin: "https://feedtask.netlify.app",

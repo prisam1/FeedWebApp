@@ -41,7 +41,7 @@ export const getUserData = async (email) => {
 };
 
 export const googleAuth = async () => {
-  const response = await api.get("/auth/google");
+  const response = await api.get("/auth/google/callback");
 
   return response.data;
 };

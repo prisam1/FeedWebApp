@@ -188,9 +188,12 @@ exports.getCurrentUser = (req, res) => {
 };
 
 // Logout the user
-exports.googleLogout = (req, res) => {
-  req.logout((err) => {
-    if (err) return res.status(500).json({ error: "Logout failed" });
+exports.googleLogout = async (req, res) => {
+  try {
+    await req.logout();
+    res.clearCookie("access_token");
     res.status(200).json({ message: "Logout successful" });
-  });
+  } catch (error) {
+    res.status(500).json({ error: "Logout failed" });
+  }
 };

@@ -28,7 +28,7 @@ router.get("/user", authMiddleware, user);
 
 //Google for authentication
 
-router.get("/user", authMiddleware, getCurrentUser);
+router.get("/current-user", authMiddleware, getCurrentUser);
 router.get("/google", googleLogin);
 router.get(
   "/google/callback",

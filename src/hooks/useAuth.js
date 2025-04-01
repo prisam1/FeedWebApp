@@ -225,7 +225,7 @@ export const useGoogleAuth = () => {
       //dispatch(setUserDetails(user));
       dispatch(loginAction());
 
-      return user;
+      //return user;
     } catch (err) {
       console.error(`${action} Error:`, err.response?.data || err.message);
       setError(err.response?.data || "Google Authentication failed");

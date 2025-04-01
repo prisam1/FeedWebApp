@@ -158,7 +158,7 @@ exports.setNewPassword = async (req, res) => {
 };
 
 // Redirect to Google login
-exports.googleLogin = (req, res) => {
+exports.googleLogin = (req, res,next) => {
   passport.authenticate("google", { scope: ["profile", "email"] })(
     req,
     res,
@@ -168,41 +168,46 @@ exports.googleLogin = (req, res) => {
 
 // Handle Google callback
 exports.googleCallback = async (req, res) => {
-  const { id, displayName, emails } = req.user;
-  const isMobile = req.headers["user-agent"].includes("Mobi");
-  const email = emails[0].value;
+  try {
+    if (!req.user) {
+      return res.status(401).json({ error: "Authentication failed" });
+    }
 
-  let user = await User.findOne({ email });
-  if (!user) {
-    const hashedPassword = await bcrypt.hash(password, 10);
-    user = await User.create({
-      googleId: id,
-      name: displayName,
-      email,
-      password: hashedPassword,
-    });
+    const { id, displayName, emails } = req.user;
+    const isMobile = req.headers["user-agent"]?.includes("Mobi") || false;
+    const email = emails[0].value;
+
+    let user = await User.findOne({ email });
+
+    if (!user) {
+      const hashedPassword = await bcrypt.hash(id, 10);  
+      user = await User.create({
+        googleId: id,
+        name: displayName,
+        email,
+        password: hashedPassword, 
+      });
+    }
+
+    // Generate JWT
+    const token = jwt.sign(
+      { id: user._id, googleId: user.googleId, email: user.email },
+      process.env.JWT_SECRET,
+      { expiresIn: "1d" }
+    );
+
+    setAuthCookies(res, token, isMobile);
+
+    // Redirect user to frontend with token
+    res.redirect(
+      `${process.env.FRONT_URL}/home?name=${encodeURIComponent(displayName)}&email=${encodeURIComponent(email)}`
+    );
+  } catch (err) {
+    console.error("Google OAuth Callback Error:", err);
+    res.status(500).json({ error: "Internal Server Error" });
   }
-
-  // Generate a JWT for the user
-  const token = jwt.sign(
-    {
-      id: user._id,
-      googleId: user.googleId,
-      email: user.email,
-    },
-    process.env.JWT_SECRET,
-    { expiresIn: "1d" }
-  );
-
-  // Set token in cookies for desktop, return token for mobile
-  setAuthCookies(res, token, isMobile);
-
-  res.redirect(
-    `${process.env.FRONT_URL}/home?name=${encodeURIComponent(
-      req.user.displayName
-    )}&email=${encodeURIComponent(req.user.emails[0].value)}`
-  );
 };
+
 
 // Get the current user for google Oauth
 exports.getCurrentUser = async (req, res) => {

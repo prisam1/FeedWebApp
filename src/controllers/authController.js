@@ -158,7 +158,7 @@ exports.setNewPassword = async (req, res) => {
 };
 
 // Redirect to Google login
-exports.googleLogin = (req, res,next) => {
+exports.googleLogin = (req, res, next) => {
   passport.authenticate("google", { scope: ["profile", "email"] })(
     req,
     res,
@@ -180,12 +180,12 @@ exports.googleCallback = async (req, res) => {
     let user = await User.findOne({ email });
 
     if (!user) {
-      const hashedPassword = await bcrypt.hash(id, 10);  
+      const hashedPassword = await bcrypt.hash(id, 10);
       user = await User.create({
         googleId: id,
         name: displayName,
         email,
-        password: hashedPassword, 
+        password: hashedPassword,
       });
     }
 
@@ -198,16 +198,16 @@ exports.googleCallback = async (req, res) => {
 
     setAuthCookies(res, token, isMobile);
 
-    // Redirect user to frontend with token
-    res.redirect(
-      `${process.env.FRONT_URL}/home?name=${encodeURIComponent(displayName)}&email=${encodeURIComponent(email)}`
-    );
+    // Redirect user to frontend
+    res.redirect(`${process.env.FRONT_URL}/home`);
+    // res.redirect(
+    //   `${process.env.FRONT_URL}/home?name=${encodeURIComponent(displayName)}&email=${encodeURIComponent(email)}`
+    // );
   } catch (err) {
     console.error("Google OAuth Callback Error:", err);
     res.status(500).json({ error: "Internal Server Error" });
   }
 };
-
 
 // Get the current user for google Oauth
 exports.getCurrentUser = async (req, res) => {

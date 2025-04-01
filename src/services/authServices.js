@@ -41,7 +41,7 @@ export const getUserData = async (email) => {
 };
 
 export const googleAuth = async () => {
-  window.location.href = `${process.env.REACT_APP_API_URL}/auth/google/callback`;
+  window.location.href = `${process.env.REACT_APP_API_URL}/auth/google`;
 };
 
 

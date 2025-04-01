@@ -167,16 +167,28 @@ exports.googleLogin = (req, res) => {
 };
 
 // Handle Google callback
-exports.googleCallback = (req, res) => {
-  const user = req.user;
+exports.googleCallback = async (req, res) => {
+  const { id, displayName, emails } = req.user;
   const isMobile = req.headers["user-agent"].includes("Mobi");
+  const email = emails[0].value;
+
+  let user = await User.findOne({ email });
+  if (!user) {
+    const hashedPassword = await bcrypt.hash(password, 10);
+    user = await User.create({
+      googleId: id,
+      name: displayName,
+      email,
+      password: hashedPassword,
+    });
+  }
+
   // Generate a JWT for the user
   const token = jwt.sign(
     {
       id: user._id,
       googleId: user.googleId,
       email: user.email,
-      name: user.name,
     },
     process.env.JWT_SECRET,
     { expiresIn: "1d" }
@@ -192,9 +204,19 @@ exports.googleCallback = (req, res) => {
   );
 };
 
-// Get the current user
-exports.getCurrentUser = (req, res) => {
-  res.status(200).json({ user: req.user });
+// Get the current user for google Oauth
+exports.getCurrentUser = async (req, res) => {
+  try {
+    const token = req.cookies.access_token;
+    if (!token) return res.status(401).json({ error: "Not Authenticated" });
+
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const user = await User.findById(decoded.id).select("-password");
+
+    res.status(200).json(user);
+  } catch (err) {
+    res.status(401).json({ error: "Invalid Token" });
+  }
 };
 
 // Logout the user

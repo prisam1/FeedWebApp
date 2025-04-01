@@ -18,6 +18,7 @@ app.use(
     allowedHeaders: ["Content-Type", "Authorization"], // Allow Authorization header
   })
 );
+
 app.use(express.json({ limit: "10mb" }));
 app.use(cookieParser());
 app.use(
@@ -29,6 +30,11 @@ app.use(
 );
 app.use(passport.initialize());
 app.use(passport.session());
+app.use((req, res, next) => {
+  res.setHeader("Cross-Origin-Opener-Policy", "same-origin-allow-popups");
+  res.setHeader("Cross-Origin-Embedder-Policy", "require-corp");
+  next();
+});
 
 mongoose
   .connect(process.env.MONGO_STRING)

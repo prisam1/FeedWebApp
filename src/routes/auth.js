@@ -26,11 +26,13 @@ router.post("/forgot-password-otp", forgotPasswordOTP);
 router.post("/set-password", setNewPassword);
 router.get("/user", authMiddleware, user);
 
-// Redirect to Google for authentication
+//Google for authentication
+
+router.get("/user", authMiddleware, getCurrentUser);
 router.get("/google", googleLogin);
 router.get(
   "/google/callback",
-  passport.authenticate("google", { failureRedirect: "/login-failure" }),
+  passport.authenticate("google", { failureRedirect: "/login" }),
   googleCallback
 );
 router.get("/googleLogout", googleLogout);

@@ -219,10 +219,10 @@ export const useGoogleAuth = () => {
     setError(null);
 
     try {
-      const response = await googleAuth();
-      const { user } = response.data;
+      await googleAuth();
+      //const { user } = response.data;
 
-      dispatch(setUserDetails(user));
+      //dispatch(setUserDetails(user));
       dispatch(loginAction());
 
       return user;

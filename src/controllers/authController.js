@@ -174,27 +174,37 @@ exports.googleCallback = async (req, res) => {
       return res.status(401).json({ error: "Authentication failed" });
     }
 
-    const { id, displayName, emails } = req.user;
-    const isMobile = req.headers["user-agent"]?.includes("Mobi") || false;
-    const email = emails[0].value;
+    const { id, googleId, emails } = req.user;
+    // const email = emails[0].value;
 
-    let user = await User.findOne({ email });
+    // let user = await User.findOne({ email });
 
-    if (!user) {
-      const hashedPassword = await bcrypt.hash(id, 10);
-      user = await User.create({
-        googleId: id,
-        name: displayName,
-        email,
-        password: hashedPassword,
-      });
+    // if (!user) {
+    //   const hashedPassword = await bcrypt.hash(id, 10);
+    //   user = await User.create({
+    //     googleId: id,
+    //     name: displayName,
+    //     email,
+    //     password: hashedPassword,
+    //   });
+    // }
+    // Check if emails exist before accessing them
+    const email = emails && emails.length > 0 ? emails[0].value : null;
+
+    console.log("Google OAuth User:", req.user);
+
+    if (!email) {
+      return res.status(400).json({ error: "Email not provided by Google" });
     }
+
+    // User already exists from passport strategy
+    const user = await User.findOne({ email });
 
     // Generate JWT
     const token = jwt.sign(
       { id: user._id, googleId: user.googleId, email: user.email },
       process.env.JWT_SECRET,
-      { expiresIn: "1d" }
+      { expiresIn: "2d" }
     );
 
     setAuthCookies(res, token, isMobile);

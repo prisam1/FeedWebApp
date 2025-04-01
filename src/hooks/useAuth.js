@@ -16,7 +16,7 @@ import {
   loginSuccess as loginAction,
   logout as logoutAction,
 } from "../redux/slices/authSlice";
-import { getUserData, logout } from "../services/authServices";
+import { getUserData, logout,currentGoogleUser } from "../services/authServices";
 
 export const useRegister = () => {
   const [loading, setLoading] = useState(false);
@@ -220,12 +220,14 @@ export const useGoogleAuth = () => {
 
     try {
       await googleAuth();
-      //const { user } = response.data;
 
-      //dispatch(setUserDetails(user));
+      const user = await currentGoogleUser() 
+
+      dispatch(setUserDetails(user));
       dispatch(loginAction());
 
-      //return user;
+      return user;
+
     } catch (err) {
       console.error(`${action} Error:`, err.response?.data || err.message);
       setError(err.response?.data || "Google Authentication failed");

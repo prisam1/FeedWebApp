@@ -33,5 +33,6 @@ router.get(
   passport.authenticate("google", { failureRedirect: "/login-failure" }),
   googleCallback
 );
+router.get("/googleLogout", googleLogout);
 
 module.exports = router;

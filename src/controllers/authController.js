@@ -182,6 +182,7 @@ exports.googleCallback = (req, res) => {
     { expiresIn: "1d" }
   );
 
+  console.log("_>",user,)
   // Set token in cookies for desktop, return token for mobile
   setAuthCookies(res, token, isMobile);
 

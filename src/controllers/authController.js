@@ -174,7 +174,7 @@ exports.googleCallback = async (req, res) => {
       return res.status(401).json({ error: "Authentication failed" });
     }
 
-    const { id, googleId, emails } = req.user;
+    const { _id, googleId, email } = req.user;
     // const email = emails[0].value;
 
     // let user = await User.findOne({ email });
@@ -189,20 +189,17 @@ exports.googleCallback = async (req, res) => {
     //   });
     // }
     // Check if emails exist before accessing them
-    const email = emails && emails.length > 0 ? emails[0].value : null;
+    const userEmail = email && email.length > 0 ? email[0].value : null;
 
     console.log("Google OAuth User:", req.user);
 
     if (!email) {
       return res.status(400).json({ error: "Email not provided by Google" });
     }
-
-    // User already exists from passport strategy
-    const user = await User.findOne({ email });
-
+  
     // Generate JWT
     const token = jwt.sign(
-      { id: user._id, googleId: user.googleId, email: user.email },
+      { id: _id, googleId: googleId, email: userEmail },
       process.env.JWT_SECRET,
       { expiresIn: "2d" }
     );

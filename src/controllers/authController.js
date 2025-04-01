@@ -5,6 +5,7 @@ const jwt = require("jsonwebtoken");
 const { setAuthCookies } = require("../helper/auth.helper");
 const { generateRandomSixDigit } = require("../helper/generateOtp.helper");
 const { sendMail } = require("../utils/nodemailer");
+const passport = require("passport");
 
 //Create User
 exports.register = async (req, res) => {

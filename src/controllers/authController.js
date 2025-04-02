@@ -203,7 +203,7 @@ exports.googleCallback = async (req, res) => {
 
     // Redirect user to frontend
     res.redirect(`${process.env.FRONT_URL}/home`);
-    res.status(200).json({ message: "Login successful", access_token });
+    //res.status(200).json({ message: "Login successful", access_token });
     // res.redirect(
     //   `${process.env.FRONT_URL}/home?name=${encodeURIComponent(displayName)}&email=${encodeURIComponent(email)}`
     // );

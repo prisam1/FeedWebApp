@@ -175,20 +175,10 @@ exports.googleCallback = async (req, res) => {
     }
 
     const { _id, googleId, email } = req.user;
-    // const email = emails[0].value;
 
-    // let user = await User.findOne({ email });
+    const isMobile = req.headers["user-agent"].includes("Mobi");
+    let access_token = null;
 
-    // if (!user) {
-    //   const hashedPassword = await bcrypt.hash(id, 10);
-    //   user = await User.create({
-    //     googleId: id,
-    //     name: displayName,
-    //     email,
-    //     password: hashedPassword,
-    //   });
-    // }
-    // Check if emails exist before accessing them
     const userEmail = email && email.length > 0 ? email[0].value : null;
 
     console.log("Google OAuth User:", req.user);
@@ -196,7 +186,7 @@ exports.googleCallback = async (req, res) => {
     if (!email) {
       return res.status(400).json({ error: "Email not provided by Google" });
     }
-  
+
     // Generate JWT
     const token = jwt.sign(
       { id: _id, googleId: googleId, email: userEmail },
@@ -204,10 +194,16 @@ exports.googleCallback = async (req, res) => {
       { expiresIn: "2d" }
     );
 
+    //access token only send for mobile
+    if (isMobile) {
+      access_token = token;
+    }
+
     setAuthCookies(res, token, isMobile);
 
     // Redirect user to frontend
     res.redirect(`${process.env.FRONT_URL}/home`);
+    res.status(200).json({ message: "Login successful", access_token });
     // res.redirect(
     //   `${process.env.FRONT_URL}/home?name=${encodeURIComponent(displayName)}&email=${encodeURIComponent(email)}`
     // );

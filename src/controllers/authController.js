@@ -187,18 +187,18 @@ exports.googleCallback = async (req, res) => {
       return res.status(400).json({ error: "Email not provided by Google" });
     }
 
-    let user = await User.findOne({ googleId: googleId });
+    // let user = await User.findOne({ googleId: googleId });
 
-    if (!user) {
-      const hashedPassword = await bcrypt.hash(googleId, 10);
+    // if (!user) {
+    //   const hashedPassword = await bcrypt.hash(googleId, 10);
 
-      await User.create({
-        googleId: googleId,
-        name: name,
-        email: email,
-        password: hashedPassword,
-      });
-    }
+    //   await User.create({
+    //     googleId: googleId,
+    //     name: name,
+    //     email: email,
+    //     password: hashedPassword,
+    //   });
+    // }
 
     // Generate JWT
     const token = jwt.sign(

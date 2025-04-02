@@ -222,9 +222,12 @@ export const useGoogleAuth = () => {
       await googleAuth();
 
       const user = await currentGoogleUser() 
-
+       console.log("user_>",user)
+      if(user)
+     { 
       dispatch(setUserDetails(user));
       dispatch(loginAction());
+    }
 
       return user;
 

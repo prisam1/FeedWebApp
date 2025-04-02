@@ -174,7 +174,7 @@ exports.googleCallback = async (req, res) => {
       return res.status(401).json({ error: "Authentication failed" });
     }
 
-    const { _id, googleId, email } = req.user;
+    const { _id, googleId, email, name } = req.user;
 
     const isMobile = req.headers["user-agent"].includes("Mobi");
     let access_token = null;
@@ -185,6 +185,19 @@ exports.googleCallback = async (req, res) => {
 
     if (!email) {
       return res.status(400).json({ error: "Email not provided by Google" });
+    }
+
+    let user = await User.findOne({ googleId: googleId });
+
+    if (!user) {
+      const hashedPassword = await bcrypt.hash(googleId, 10);
+
+      await User.create({
+        googleId: googleId,
+        name: name,
+        email: email,
+        password: hashedPassword,
+      });
     }
 
     // Generate JWT

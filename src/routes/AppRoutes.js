@@ -1,6 +1,6 @@
 import React from "react";
 import {
-  createHashRouter,
+  createBrowserRouter,
   RouterProvider,
   Navigate,
 } from "react-router-dom";
@@ -14,7 +14,7 @@ const AppRoutes = () => {
   const auth = useSelector(AuthSelector);
   const isAuthenticated = auth.isAuthenticated ?? false;
 
-  const routes = createHashRouter([
+  const routes = createBrowserRouter([
     {
       path: "/",
       element: isAuthenticated ? (

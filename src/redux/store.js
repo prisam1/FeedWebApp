@@ -1,29 +1,42 @@
 import { configureStore } from "@reduxjs/toolkit";
-//import { persistStore, persistReducer } from 'redux-persist';
-//import storage from 'redux-persist/lib/storage'
-import authReducer from "./slices/authSlice";
-import userReducer from "./slices/userSlice";
-import registerReducer from "./slices/registerSlice";
+import {
+  persistStore,
+  persistReducer,
+  FLUSH,
+  REHYDRATE,
+  PAUSE,
+  PERSIST,
+  PURGE,
+  REGISTER,
+} from "redux-persist";
+import storage from 'redux-persist/lib/storage'
+import authSlice from "./slices/authSlice";
+import userSlice from "./slices/userSlice";
+import registerSlice from "./slices/registerSlice";
 
-// const persistConfig = {
-//   key: 'root',
-//   version: 1,
-//   storage,
-// };
+const persistConfig = {
+  key: 'root',
+  version: 1,
+  storage,
+};
 
-// const reducers = combineReducers({
-//   auth: authSlice,
-//   user: userSlice,
-//   register: registerSlice,
-//   //search: searchSlice,
-// })
+const reducers = combineReducers({
+  auth: authSlice,
+  user: userSlice,
+  register: registerSlice,
+  //search: searchSlice,
+})
 
-//const persistedReducer = persistReducer(persistConfig, rootReducer);
+const persistedReducer = persistReducer(persistConfig, reducers);
 
 export const store = configureStore({
-  reducer: {
-    auth: authReducer,
-    user: userReducer,
-    register: registerReducer,
-  },
+  reducer: persistedReducer,
+  middleware: (getDefaultMiddleware) =>
+  getDefaultMiddleware({
+    serializableCheck: {
+      ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+    },
+  }),
 });
+
+export let persistor = persistStore(store);

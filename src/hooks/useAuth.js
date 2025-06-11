@@ -16,7 +16,11 @@ import {
   loginSuccess as loginAction,
   logout as logoutAction,
 } from "../redux/slices/authSlice";
-import { getUserData, logout,currentGoogleUser } from "../services/authServices";
+import {
+  getUserData,
+  logout,
+  currentGoogleUser,
+} from "../services/authServices";
 
 export const useRegister = () => {
   const [loading, setLoading] = useState(false);
@@ -145,7 +149,7 @@ export const useResetPassword = () => {
       toast.success("Password successfully changed");
       if (isAuthenticated) {
         navigate("/home", { replace: true });
-      } else { 
+      } else {
         navigate("/login", { replace: true });
       }
       return data;
@@ -221,16 +225,14 @@ export const useGoogleAuth = () => {
     try {
       await googleAuth();
 
-      const user = await currentGoogleUser() 
-       console.log("user_>",user)
-      if(user)
-     { 
-      dispatch(setUserDetails(user));
-      dispatch(loginAction());
-    }
+      const user = await currentGoogleUser();
+      //  console.log("user_>",user)
+      if (user) {
+        dispatch(setUserDetails(user));
+        dispatch(loginAction());
+      }
 
       return user;
-
     } catch (err) {
       console.error(`${action} Error:`, err.response?.data || err.message);
       setError(err.response?.data || "Google Authentication failed");

@@ -54,13 +54,13 @@ export const Feed = () => {
       <h1 className="text-blue-600 lg:text-2xl text-lg font-semibold">Feed</h1>
 
       <form onSubmit={addPost} className="flex flex-col gap-2 mt-2 w-full">
-        <div className="relative w-full lg:max-w-xl max-w-52">
+        <div className="relative w-full lg:max-w-xl max-w-md">
           <textarea
             type="text"
             placeholder="Enter a caption"
             rows="5"
             value={caption}
-            className="w-full lg:px-4 px-2 lg:pt-2 pt-1 pb-11 lg:max-w-xl max-w-52  border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full lg:px-4 px-2 lg:pt-2 pt-1 pb-11 lg:max-w-xl max-w-md  border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             onChange={(e) => setCaption(e.target.value)}
             required
           />
@@ -93,13 +93,13 @@ export const Feed = () => {
         </div>
         <button
           type="submit"
-          className="lg:h-10 px-4 py-2 lg:w-24 bg-purple-500 rounded-md text-white"
+          className="lg:h-10 px-4 py-2 lg:w-24 max-w-md bg-purple-500 rounded-md text-white"
         >
           {createPostLoading ? "Posting..." : "Post"}
         </button>
       </form>
       {loading && <p className="mt-2 text-green-500">Loading posts...</p>}
-      <div className="w-full max-w-lg mt-8">
+      <div className="w-full max-w-lg mt-10">
         {posts?.map((post) => {
           return (
             <div key={post._id} className="flex flex-col gap-1 w-full max-w-lg">

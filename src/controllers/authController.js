@@ -211,7 +211,7 @@ exports.googleCallback = async (req, res) => {
     if (isMobile) {
       access_token = token;
     }
-    console.log("11->", token);
+     
     setAuthCookies(res, token, isMobile);
 
     // Redirect user to frontend

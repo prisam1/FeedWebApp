@@ -7,8 +7,11 @@ import { UserSelector } from "../redux/slices/userSlice";
 
 export const Header = () => {
   const navigate = useNavigate();
+
   const { handleLogout } = useLogout();
+
   const user = useSelector(UserSelector);
+
   return (
     <div className="flex items-center justify-between xl:gap-20 lg:px-10 px-4 h-24 w-full bg-purple-700 border-b shadow-md">
       <div className="flex items-center gap-2 xl:gap-8">
@@ -19,7 +22,7 @@ export const Header = () => {
           <User className="w-7 h-7" />
         </button>
 
-        <span className="font-bold lg:text-2xl text-xs">Greetings,</span>
+        <span className="font-bold lg:text-2xl text-xs">Hi,</span>
         <span className="font-bold lg:text-2xl text-xs">
           {user?.name?.toUpperCase()?.substring(0, 24)}
         </span>

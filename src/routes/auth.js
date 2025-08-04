@@ -7,11 +7,12 @@ const {
   forgotPasswordOTP,
   setNewPassword,
   user,
-  googleLogin,
   googleCallback,
   getCurrentUser,
   googleLogout,
 } = require("../controllers/authController");
+
+const { verifyGoogleToken } = require("../config/googleVerificationToken");
 const authMiddleware = require("../middleware/authMiddleware");
 const passport = require("passport");
 
@@ -29,7 +30,8 @@ router.get("/user", authMiddleware, user);
 //Google for authentication
 
 router.get("/current-user", authMiddleware, getCurrentUser);
-router.get("/google", googleLogin);
+router.post("/google/verify-token", verifyGoogleToken);
+
 router.get(
   "/google/callback",
   passport.authenticate("google", { failureRedirect: "/login" }),

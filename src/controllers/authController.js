@@ -159,15 +159,16 @@ exports.setNewPassword = async (req, res) => {
 };
 
 // Redirect to Google login
-exports.googleLogin = (req, res, next) => {
-  passport.authenticate("google", { scope: ["profile", "email"] })(
-    req,
-    res,
-    next
-  );
-};
+// exports.googleLogin = (req, res, next) => {
+//   passport.authenticate("google", { scope: ["profile", "email"] })(
+//     req,
+//     res,
+//     next
+//   );
+// };
 
 // Handle Google callback
+
 exports.googleCallback = async (req, res) => {
   try {
     if (!req.user) {
@@ -187,19 +188,6 @@ exports.googleCallback = async (req, res) => {
       return res.status(400).json({ error: "Email not provided by Google" });
     }
 
-    // let user = await User.findOne({ googleId: googleId });
-
-    // if (!user) {
-    //   const hashedPassword = await bcrypt.hash(googleId, 10);
-
-    //   await User.create({
-    //     googleId: googleId,
-    //     name: name,
-    //     email: email,
-    //     password: hashedPassword,
-    //   });
-    // }
-
     // Generate JWT
     const token = jwt.sign(
       { id: _id, googleId: googleId, email: userEmail },
@@ -218,10 +206,7 @@ exports.googleCallback = async (req, res) => {
 
     // res.status(200).json({ message: "Login successful", access_token, token });
     res.redirect(`${process.env.FRONT_URL}/home`);
-    //res.status(200).json({ message: "Login successful", access_token });
-    // res.redirect(
-    //   `${process.env.FRONT_URL}/home?name=${encodeURIComponent(displayName)}&email=${encodeURIComponent(email)}`
-    // );
+   
   } catch (err) {
     console.error("Google OAuth Callback Error:", err);
     res.status(500).json({ error: "Internal Server Error" });

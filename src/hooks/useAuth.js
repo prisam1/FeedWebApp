@@ -223,7 +223,7 @@ export const useGoogleAuth = () => {
     setError(null);
 
     try {
-      await googleAuth();
+      await googleAuth(credential);
 
       const user = await currentGoogleUser();
       //  console.log("user_>",user)

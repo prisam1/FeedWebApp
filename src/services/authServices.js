@@ -40,8 +40,8 @@ export const getUserData = async (email) => {
   return response.data;
 };
 
-export const googleAuth = async () => {
-  window.location.href = `${process.env.REACT_APP_API_URL}/auth/google`;
+export const googleAuth = (credential) => {
+  return api.post("/auth/google/verify-token", { credential });
 };
 
 

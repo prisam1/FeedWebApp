@@ -19,6 +19,8 @@ export const Login = () => {
 
   const handleGoogleSuccess = async (response) => {
     const { credential } = response;
+
+    console.log("-->", credential);
     await handleGoogleAuth(credential, "login");
   };
 

@@ -47,9 +47,9 @@ export const TaskBoard = () => {
   if (error) return <p>{error}</p>;
 
   return (
-    <div className="flex flex-col w-full lg:ml-0 ml-5">
+    <div className="flex flex-col w-full lg:max-w-3xl max-w-md lg:ml-0 ml-5">
       <TaskForm fetchTasks={fetchTasks} /> 
-       <DndProvider backend={HTML5Backend} className="w-full lg:max-w-2xl max-w-md">
+       <DndProvider backend={HTML5Backend} className="w-full lg:max-w-3xl max-w-md">
         <div className="flex flex-row justify-between lg:px-2 gap-1 mt-10">
           {["Pending", "Completed", "Done"].map((status) => (
             <TaskColumn

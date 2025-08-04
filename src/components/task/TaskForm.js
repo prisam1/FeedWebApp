@@ -14,7 +14,7 @@ export const TaskForm = ({ fetchTasks }) => {
 
   return (
     <div className="w-full">
-      <h1 className="mt-0 text-blue-600 lg:text-2xl text-lg font-semibold">Create Task</h1>
+      {/* <h1 className="mt-0 text-blue-600 lg:text-2xl text-lg font-semibold">Create Task</h1> */}
 
       <form
         onSubmit={handleSubmit}

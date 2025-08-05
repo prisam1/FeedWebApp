@@ -110,18 +110,18 @@ export const Feed = () => {
           return (
             <div
               key={post._id}
-              className="flex flex-col border-2 rounded-md mb-2"
+              className="flex flex-col border-[1px] px-4 border-gray-300 rounded-md mt-3"
             >
-              <div className="p-1 pl-2 font-bold">
+              <div className="py-1 font-bold">
                 {user?.name?.substring(0, 24)}
               </div>
 
               <img
                 src={post.photoUrl}
                 alt={post.caption}
-                className="w-full lg:max-w-3xl max-w-md h-90"
+                className="w-full lg:max-w-3xl max-w-md h-85 p-1"
               />
-              <div className="p-2">
+              <div className="p-0`">
                 <div className="w-full bg-slate-300 mt-2 h-[1px]" />
                 <p className="font-semibold p-2 lg:text-base  text-xs">
                   {post.caption}

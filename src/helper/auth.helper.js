@@ -1,7 +1,7 @@
 exports.setAuthCookies = (res, token, isMobile) => {
   const cookieOptions = {
     httpOnly: true,
-    sameSite: "none",
+    sameSite: "None",
     maxAge: 2 * 24 * 60 * 60 * 1000,
     secure: true,
   };
@@ -13,7 +13,7 @@ exports.setAuthCookies = (res, token, isMobile) => {
   //   cookieOptions.secure = false; // Allow insecure cookies in local development
   // }
 
-  if (!isMobile) {
-    res.cookie("access_token", token, cookieOptions);
-  }
+  // if (!isMobile) {
+  res.cookie("access_token", token, cookieOptions);
+  // }
 };

@@ -62,7 +62,7 @@ export const Feed = () => {
           <textarea
             type="text"
             placeholder="Enter a caption"
-            rows="5"
+            rows="3"
             value={caption}
             className="w-full lg:px-4 px-2 lg:pt-2 pt-1 pb-11 lg:max-w-3xl max-w-md  border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             onChange={(e) => setCaption(e.target.value)}
@@ -72,7 +72,7 @@ export const Feed = () => {
             <button
               type="button"
               onClick={triggerFileInput}
-              className="lg:py-2 lg:px-2"
+              className="lg:py-[6px] lg:px-0 py-[6px]"
             >
               <ImagePlus className="lg:w-7 lg:h-7" />
             </button>

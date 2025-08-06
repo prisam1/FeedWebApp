@@ -12,7 +12,11 @@ const postRoutes = require("./src/routes/post");
 const app = express();
 app.use(
   cors({
-    origin: ["https://feedtask.netlify.app", "http://localhost:3000"],
+    origin: [
+      "https://feedtask.netlify.app",
+      "http://localhost:3000",
+      "http://192.168.31.217:3000",
+    ],
     credentials: true,
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"], // Allowed HTTP methods
     allowedHeaders: ["Content-Type", "Authorization"], // Allow Authorization header
@@ -29,7 +33,7 @@ app.use(
   })
 );
 app.use(passport.initialize());
-app.use(passport.session()); 
+app.use(passport.session());
 
 mongoose
   .connect(process.env.MONGO_STRING)

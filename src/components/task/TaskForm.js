@@ -31,7 +31,7 @@ export const TaskForm = ({ fetchTasks }) => {
         <textarea
           type="text"
           placeholder="Task Description"
-          rows="4"
+          rows="3"
           className="w-full lg:px-4 px-2 py-2 lg:mt-0 mt-[6px] lg:max-w-2xl max-w-md border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
           value={formData.description}
           onChange={(e) =>
@@ -40,7 +40,7 @@ export const TaskForm = ({ fetchTasks }) => {
           required
         />
         <button
-          type="submit"  
+          type="submit"
           className="lg:h-10 px-4 py-2 lg:mt-0 mt-[2px] lg:w-24 max-w-md bg-purple-500 rounded-md text-white"
         >
           Add Task

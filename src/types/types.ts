@@ -38,5 +38,6 @@ export interface User {
   export interface TaskUpdates {
     name?: string;
     description?: string;
-    status?: string;
+    status: string;
   }
+ 

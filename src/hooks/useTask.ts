@@ -62,12 +62,12 @@ export const useUpdateTask = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
-  const handleUpdateTask = async (taskId:string, updates:TaskUpdates) => {
+  const handleUpdateTask = async (taskId:string, status:TaskUpdates) => {
     setLoading(true);
     setError(null);
 
     try {
-      const data = await updateTask(taskId, updates);
+      const data = await updateTask(taskId, status);
 
       return data;
     } catch (err) {

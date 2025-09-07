@@ -21,14 +21,26 @@ export const TaskCard: React.FC<TaskCardProps> = ({ task, deleteTask }) => {
     deleteTask(task._id);
   };
 
+  const statusColors: { [key: string]: string } = {
+    Pending: "bg-yellow-400",
+    Working: "bg-blue-400",
+    Completed: "bg-green-400",
+  };
+
+  const cardColor = statusColors[task.status] || "bg-gray-400";  // Fallback color
+
   return (
     <div
       ref={drag as unknown as Ref<HTMLDivElement>}
-      className="cursor-move lg:rounded-2xl rounded-xl bg-amber-400 lg:px-2 px-1 py-2 lg:mb-2 mb-1 flex flex-row w-full justify-between"
+      className={`cursor-move lg:rounded-2xl rounded-xl ${cardColor} lg:px-2 px-1 py-2 lg:mb-2 mb-1 flex flex-row w-full justify-between`}
     >
-      <div className="lg:px-2 px-1">
-        <h4 className="font-semibold leading-none lg:text-base text-xs">{task.name}</h4>
-        <p className="lg:text-sm mt-2 leading-none text-[10px]">{task.description}</p>
+      <div className="lg:px-2 px-1 w-full overflow-hidden">
+        <h4 className="font-semibold leading-none lg:text-base text-xs break-words">{task.name.length > 20
+          ? task.name.slice(0, 15) + "..."
+          : task.name}</h4>
+        <p className="lg:text-sm mt-2 max-w-sm leading-none text-[10px] break-words">{task.description.length > 25
+          ? task.description.slice(0, 30) + "..."
+          : task.description}</p>
       </div>
       <button
         onClick={handleDeleteTask}

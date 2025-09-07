@@ -46,15 +46,15 @@ export const TaskBoard = () => {
   if (error) return <p>{error}</p>;
 
   return (
-    <div className="flex flex-col w-full lg:max-w-3xl max-w-md lg:ml-0 ml-0">
+    <div className="flex flex-col w-full lg:max-w-6xl items-center max-w-md lg:ml-0 ml-0">
       <TaskForm fetchTasks={fetchTasks} />
       <DndProvider backend={HTML5Backend}>
-        <div className="flex flex-row justify-between lg:px-2 gap-1 mt-10">
-          {["Pending", "Completed", "Done"].map((status) => (
+        <div className="flex flex-row justify-between gap-1 mt-10">
+          {["Pending", "Working", "Completed"].map((status) => (
             <TaskColumn
               key={status}
               status={status}
-              tasks={tasks.filter((task) => task.status === status)}
+              tasks={tasks}
               moveTask={moveTask}
               deleteTask={openDeleteModal}
             />

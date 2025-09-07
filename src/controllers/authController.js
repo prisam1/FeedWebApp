@@ -158,16 +158,22 @@ exports.setNewPassword = async (req, res) => {
   }
 };
 
-// Redirect to Google login
-// exports.googleLogin = (req, res, next) => {
-//   passport.authenticate("google", { scope: ["profile", "email"] })(
-//     req,
-//     res,
-//     next
-//   );
-// };
+exports.oauthSuccess = async (req, res) => {
+  try {
+    const user = req.user;
+    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+      expiresIn: "2d",
+    });
 
-// Handle Google callback
+    // Detect mobile from user-agent or query param
+    const isMobile =
+      req.query.mobile === "true" || /mobile/i.test(req.headers["user-agent"]);
+
+    return setAuthCookies(res, token, isMobile);
+  } catch (error) {
+    return res.status(500).json({ error: "OAuth error", message: error.message });
+  }
+};
 
 exports.googleCallback = async (req, res) => {
   try {

@@ -32,11 +32,7 @@ exports.updateTask = async (req, res) => {
   const { updates } = req.body;
 
   try {
-    const task = await Task.findByIdAndUpdate(
-      id,
-      { status: updates },
-      { new: true }
-    );
+    const task = await Task.findByIdAndUpdate(id, updates, { new: true });
     res.json(task);
   } catch (error) {
     res.status(400).json({ error: error.message });

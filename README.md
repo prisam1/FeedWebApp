@@ -26,9 +26,9 @@ Tasks can be dragged and dropped between the following columns:
 
 Pending
 
-Completed
+Working
 
-Done
+Completed
 
 A confirmation modal appears before deleting any task.
 

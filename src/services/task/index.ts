@@ -13,7 +13,7 @@ export const createTask = async (name: string, description: string) => {
 };
 
 export const updateTask = async (taskId: string, updates: TaskUpdates) => {
-  const { data } = await api.put(`/tasks/${taskId}`, updates );
+  const { data } = await api.put(`/tasks/${taskId}`, {updates});
   return data;
 };
 

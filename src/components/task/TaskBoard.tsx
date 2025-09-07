@@ -50,7 +50,7 @@ export const TaskBoard = () => {
       <TaskForm fetchTasks={fetchTasks} />
       <DndProvider backend={HTML5Backend}>
         <div className="flex flex-row justify-between lg:px-2 gap-1 mt-10">
-          {["Pending", "Completed", "Done"].map((status) => (
+          {["Pending", "Working", "Completed"].map((status) => (
             <TaskColumn
               key={status}
               status={status}

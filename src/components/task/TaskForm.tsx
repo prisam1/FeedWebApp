@@ -1,19 +1,19 @@
 import React, { useState } from "react";
 import { useCreateTask } from "../../hooks/useTask";
 
-export const TaskForm = ({ fetchTasks}:any) => {
+export const TaskForm = ({ fetchTasks }: any) => {
   const [formData, setFormData] = useState({ name: "", description: "" });
 
   const { handleCreateTask } = useCreateTask(fetchTasks);
 
-  const handleSubmit = async (e:any) => {
+  const handleSubmit = async (e: any) => {
     e.preventDefault();
     await handleCreateTask(formData.name, formData.description);
     setFormData({ name: "", description: "" });
   };
 
   return (
-    <div className="w-full">
+    <div className="w-full lg:max-w-4xl">
       {/* <h1 className="mt-0 text-blue-600 lg:text-2xl text-lg font-semibold">Create Task</h1> */}
 
       <form

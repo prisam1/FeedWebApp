@@ -11,7 +11,7 @@ export const ResetPassword = () => {
   const isAuthenticated = auth.isAuthenticated ?? false;
 
   const [formData, setFormData] = useState<FormData>({ email: "", otp: "" });
-  const [otpSent, setOtpSent] = useState<boolean>(false);
+  const [otpSent, setOtpSent] = useState<boolean>(true);
   const [otpResetTime, setOtpResetTime] = useState<number>(0);
 
   const { handleForgotPassword, loading: sendingOtpLoading } = useForgotPassword();
@@ -64,7 +64,7 @@ export const ResetPassword = () => {
     <div className="flex flex-col mt-10 items-center w-full">
       <form
         onSubmit={otpSent ? handleVerifyOtp : handleSendOtp}
-        className="space-y-4 mt-8 flex w-full flex-col max-w-md"
+        className="mt-8 flex w-full flex-col max-w-md"
       >
         <label htmlFor="email">
           Email<span className="text-red-800">*</span>
@@ -74,12 +74,18 @@ export const ResetPassword = () => {
           name="email"
           type="email"
           placeholder="Enter your email"
-          className="flex h-12 w-full rounded-md border border-input px-5 py-4 text-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+          className="flex h-12 w-full mt-2 rounded-md border border-input px-5 py-4 text-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
           value={formData.email}
           onChange={handleChange}
           required
           disabled={otpSent}
         />
+        {otpSent && <p
+          onClick={() => setOtpSent(false)}
+          className="underline w-14 mb-4 text-blue-600 hover:text-blue-800 cursor-pointer">
+          change
+        </p>
+        }
 
         {otpSent && (
           <>
@@ -91,7 +97,7 @@ export const ResetPassword = () => {
               name="otp"
               type="text"
               placeholder="Enter OTP"
-              className="flex h-12 w-full rounded-md border border-input px-5 py-4 text-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+              className="flex h-12 mt-2 w-full rounded-md border border-input px-5 py-4 text-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
               value={formData.otp}
               onChange={handleChange}
               required
@@ -103,9 +109,9 @@ export const ResetPassword = () => {
         )}
         <button
           type="submit"
-          className={`h-10 px-4 py-2 rounded-md text-white ${otpSent
-              ? "bg-green-600 hover:bg-green-700"
-              : "bg-purple-600 hover:bg-purple-700"
+          className={`h-10 mt-4 px-4 py-2 rounded-md text-white ${otpSent
+            ? "bg-green-600 hover:bg-green-700"
+            : "bg-purple-600 hover:bg-purple-700"
             }`}
           disabled={
             sendingOtpLoading ||

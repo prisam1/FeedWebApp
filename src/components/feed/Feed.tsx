@@ -65,7 +65,7 @@ export const Feed = () => {
             placeholder="Enter a caption"
             rows={3}
             value={caption}
-            className="w-full lg:px-4 px-2 lg:pt-2 pt-1 pb-11 lg:max-w-3xl max-w-md border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full lg:px-4 px-2 lg:pt-2 pt-1 pb-11 lg:max-w-3xl max-w-md border rounded-md text-sm file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
             onChange={(e) => setCaption(e.target.value)}
             required
           />

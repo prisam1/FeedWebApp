@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Feed } from "../components/feed/Feed";
 import { TaskBoard } from "../components/task/TaskBoard";
 
@@ -33,9 +33,9 @@ export const Home = () => {
 
       {/* Content Area */}
       <div className="w-full max-w-2xl p-6 md:p-10 transition-all duration-300">
-        <h2 className="text-3xl font-extrabold text-center mb-8 text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">
+        {/* <h2 className="text-3xl font-extrabold text-center mb-8 text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">
           {activeTab === "feed" ? "Your Social Feed" : "Your Task Board"}
-        </h2>
+        </h2> */}
         {activeTab === "feed" ? <Feed /> : <TaskBoard />}
       </div>
     </div>

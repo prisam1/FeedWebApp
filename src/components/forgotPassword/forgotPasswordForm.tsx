@@ -7,15 +7,22 @@ import { AuthSelector } from "../../redux/slices/authSlice";
 import { FormData } from "../../types/types";
 import { UserSelector } from "../../redux/slices/userSlice";
 
-export const ResetPassword = () => {
+interface ResetPasswordProps {
+  otpSent: boolean;
+  setOtpSent: (otpSent: boolean) => void;
+}
+
+export const ResetPassword = ({ otpSent, setOtpSent }: ResetPasswordProps) => {
 
   const auth = useSelector(AuthSelector);
   const user = useSelector(UserSelector);
 
   const isAuthenticated = auth.isAuthenticated ?? false;
 
-  const [formData, setFormData] = useState<FormData>({ email: user.email, otp: "" });
-  const [otpSent, setOtpSent] = useState<boolean>(false);
+  const resetPassword = user ? user.email : ""
+
+  const [formData, setFormData] = useState<FormData>({ email: resetPassword, otp: "" });
+
   const [otpResetTime, setOtpResetTime] = useState<number>(0);
 
   const { handleForgotPassword, loading: sendingOtpLoading } = useForgotPassword();

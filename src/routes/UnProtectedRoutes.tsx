@@ -7,6 +7,7 @@ import { useSelector } from "react-redux";
 import { Navigate, Outlet } from "react-router-dom";
 
 const AuthRedirectUnprotected = () => {
+  
   const auth = useSelector(AuthSelector);
 
   const isAuthenticated = auth.isAuthenticated ?? false;

@@ -5,13 +5,24 @@ import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { AuthSelector } from "../../redux/slices/authSlice";
 import { FormData } from "../../types/types";
+import { UserSelector } from "../../redux/slices/userSlice";
 
-export const ResetPassword = () => {
+interface ResetPasswordProps {
+  otpSent: boolean;
+  setOtpSent: (otpSent: boolean) => void;
+}
+
+export const ResetPassword = ({ otpSent, setOtpSent }: ResetPasswordProps) => {
+
   const auth = useSelector(AuthSelector);
+  const user = useSelector(UserSelector);
+
   const isAuthenticated = auth.isAuthenticated ?? false;
 
-  const [formData, setFormData] = useState<FormData>({ email: "", otp: "" });
-  const [otpSent, setOtpSent] = useState<boolean>(true);
+  const resetPassword = user ? user.email : ""
+
+  const [formData, setFormData] = useState<FormData>({ email: resetPassword, otp: "" });
+
   const [otpResetTime, setOtpResetTime] = useState<number>(0);
 
   const { handleForgotPassword, loading: sendingOtpLoading } = useForgotPassword();
@@ -21,7 +32,9 @@ export const ResetPassword = () => {
 
   const handleSendOtp = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
     const result = await handleForgotPassword(formData.email);
+
     if (result) {
       setOtpSent(true);
       setOtpResetTime(60); // Start the timer for 60 seconds
@@ -31,6 +44,7 @@ export const ResetPassword = () => {
 
   const handleVerifyOtp = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
     const result = await handleForgotPasswordOTP(formData.email, formData.otp);
 
     if (result) {
@@ -78,14 +92,8 @@ export const ResetPassword = () => {
           value={formData.email}
           onChange={handleChange}
           required
-          disabled={otpSent}
+          disabled={true}
         />
-        {otpSent && <p
-          onClick={() => setOtpSent(false)}
-          className="underline w-14 mb-4 text-blue-600 hover:text-blue-800 cursor-pointer">
-          change
-        </p>
-        }
 
         {otpSent && (
           <>

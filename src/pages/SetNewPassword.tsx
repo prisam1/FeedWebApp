@@ -4,6 +4,7 @@ import { useResetPassword } from "../hooks/useAuth";
 import { Eye, EyeOff } from "lucide-react";
 
 export const SetNewPassword = () => {
+  
   const [searchParams] = useSearchParams();
   const email = searchParams.get("email"); // Retrieve email from state
 

@@ -1,8 +1,11 @@
 import { useNavigate } from "react-router-dom";
 import { ResetPassword } from "../components/forgotPassword/forgotPasswordForm";
+import { useState } from "react";
 
 export const ForgotPassword = () => {
 
+  const [otpSent, setOtpSent] = useState<boolean>(false);
+  
   const navigate = useNavigate()
 
   const handleGoBack = () => {
@@ -24,10 +27,13 @@ export const ForgotPassword = () => {
             Reset your password
           </h2>
           <p className="text-[#111827] mt-[4vw] md:mt-[16px] text-[4.5vw] md:text-lg dark:text-gray-500">
-            Please enter your registered email address to reset your password.
+           {otpSent? "Please check your registered email address to reset your password.": `Please press "Send OTP" to receive a password reset code in your registered email.`}
           </p>
         </div>
-        <ResetPassword />
+        <ResetPassword 
+        otpSent={otpSent}
+        setOtpSent={setOtpSent}      
+        />
       </div>
     </div>
   );

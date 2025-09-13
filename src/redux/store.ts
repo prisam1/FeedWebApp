@@ -23,8 +23,7 @@ const persistConfig = {
 const reducers = combineReducers({
   auth: authSlice,
   user: userSlice,
-  register: registerSlice,
-  //search: searchSlice,
+  register: registerSlice, 
 });
 
 const persistedReducer = persistReducer(persistConfig, reducers);
@@ -39,4 +38,4 @@ export const store = configureStore({
     }),
 });
 
-export let persistor = persistStore(store);
+export const persistor = persistStore(store);

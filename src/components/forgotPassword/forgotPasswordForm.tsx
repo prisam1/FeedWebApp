@@ -1,11 +1,12 @@
-import { useState, useEffect, FormEvent, ChangeEvent } from "react";
+import { useState, useEffect } from "react";
 import { useForgotPassword, useForgotPasswordOTP } from "../../hooks/useAuth";
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { AuthSelector } from "../../redux/slices/authSlice";
-import { FormData } from "../../types/types";
+import { ResetFormInputs } from "../../types/types";
 import { UserSelector } from "../../redux/slices/userSlice";
+import { useForm, Controller } from "react-hook-form";
 
 interface ResetPasswordProps {
   otpSent: boolean;
@@ -18,10 +19,22 @@ export const ResetPassword = ({ otpSent, setOtpSent }: ResetPasswordProps) => {
   const user = useSelector(UserSelector);
 
   const isAuthenticated = auth.isAuthenticated ?? false;
+  const resetPassword = user ? user.email : "";
 
-  const resetPassword = user ? user.email : ""
+  const {
+    control,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm<ResetFormInputs>({
+    defaultValues: {
+      email: resetPassword,
+      otp: "",
+    },
+  });
 
-  const [formData, setFormData] = useState<FormData>({ email: resetPassword, otp: "" });
+  const email = watch("email");
+  const otp = watch("otp"); // live OTP value
 
   const [otpResetTime, setOtpResetTime] = useState<number>(0);
 
@@ -30,101 +43,110 @@ export const ResetPassword = ({ otpSent, setOtpSent }: ResetPasswordProps) => {
 
   const navigate = useNavigate();
 
-  const handleSendOtp = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
-    const result = await handleForgotPassword(formData.email);
-
+  // Send OTP
+  const onSendOtp = async () => {
+    const result = await handleForgotPassword(email);
     if (result) {
       setOtpSent(true);
-      setOtpResetTime(60); // Start the timer for 60 seconds
+      setOtpResetTime(60);
       toast.success("OTP sent successfully. Please check your email.");
     }
   };
 
-  const handleVerifyOtp = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
-    const result = await handleForgotPasswordOTP(formData.email, formData.otp);
-
+  // Verify OTP
+  const onVerifyOtp = async () => {
+    const result = await handleForgotPasswordOTP(email, otp);
     if (result) {
       toast.success("OTP verified successfully!");
       const redirectPath = isAuthenticated ? "/set-new-password" : "/reset-password";
-      navigate(`${redirectPath}?email=${formData.email}`);
+      navigate(`${redirectPath}?email=${email}`);
     }
   };
 
+  // Timer
   useEffect(() => {
     let timer: NodeJS.Timeout;
     if (otpResetTime > 0) {
-      timer = setTimeout(() => setOtpResetTime(prevTime => prevTime - 1), 1000);
+      timer = setTimeout(() => setOtpResetTime((prev) => prev - 1), 1000);
     }
     return () => clearTimeout(timer);
   }, [otpResetTime]);
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    if (name === "otp") {
-      const sanitizedValue = value.replace(/\D/g, ""); // Allow only numbers
-      if (sanitizedValue.length <= 6) {
-        setFormData(prevData => ({ ...prevData, [name]: sanitizedValue }));
-      }
-    } else {
-      setFormData(prevData => ({ ...prevData, [name]: value }));
-    }
-  };
-
   return (
     <div className="flex flex-col mt-10 items-center w-full">
       <form
-        onSubmit={otpSent ? handleVerifyOtp : handleSendOtp}
+        onSubmit={handleSubmit(otpSent ? onVerifyOtp : onSendOtp)}
         className="mt-8 flex w-full flex-col max-w-md"
       >
+        {/* Email */}
         <label htmlFor="email">
           Email<span className="text-red-800">*</span>
         </label>
-        <input
-          id="email"
+        <Controller
           name="email"
-          type="email"
-          placeholder="Enter your email"
-          className="flex h-12 w-full mt-2 rounded-md border border-input px-5 py-4 text-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-          value={formData.email}
-          onChange={handleChange}
-          required
-          disabled={true}
+          control={control}
+          rules={{
+            required: "Email is required",
+          }}
+          render={({ field }) => (
+            <>
+              <input
+                {...field}
+                id="email"
+                type="email"
+                placeholder="Enter your email"
+                className="flex h-12 w-full mt-1 rounded-md border border-input px-5 py-4 text-sm"
+                disabled={resetPassword.length > 0}
+              />
+              {errors.email && (
+                <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>
+              )}
+            </>
+          )}
         />
 
+        {/* OTP */}
         {otpSent && (
           <>
-            <label htmlFor="otp">
+            <label htmlFor="otp" className="mt-3">
               OTP<span className="text-red-800">*</span>
             </label>
-            <input
-              id="otp"
+            <Controller
               name="otp"
-              type="text"
-              placeholder="Enter OTP"
-              className="flex h-12 mt-2 w-full rounded-md border border-input px-5 py-4 text-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-              value={formData.otp}
-              onChange={handleChange}
-              required
+              control={control}
+              rules={{
+                required: "OTP is required",
+                minLength: { value: 6, message: "OTP must be 6 digits" },
+                maxLength: { value: 6, message: "OTP must be 6 digits" },
+                pattern: { value: /^[0-9]+$/, message: "OTP must contain only numbers" },
+              }}
+              render={({ field }) => (
+                <>
+                  <input
+                    {...field}
+                    id="otp"
+                    type="text"
+                    placeholder="Enter OTP"
+                    className="flex h-12 mt-1 w-full rounded-md border border-input px-5 py-4 text-sm"
+                  />
+                  {errors.otp && (
+                    <p className="text-red-500 text-sm mt-1">{errors.otp.message}</p>
+                  )}
+                </>
+              )}
             />
           </>
         )}
-        {formData.otp?.length < 6 && otpSent && (
-          <p className="text-red-800">OTP must be 6 digits.</p>
-        )}
+
+        {/* Submit button */}
         <button
           type="submit"
-          className={`h-10 mt-4 px-4 py-2 rounded-md text-white ${otpSent
-            ? "bg-green-600 hover:bg-green-700"
-            : "bg-purple-600 hover:bg-purple-700"
+          className={`h-10 mt-5 px-4 py-2 rounded-md text-white ${otpSent ? "bg-green-600 hover:bg-green-700" : "bg-purple-600 hover:bg-purple-700"
             }`}
           disabled={
             sendingOtpLoading ||
             verifyingOtpLoading ||
-            (formData.otp?.length < 6 && otpSent)
+            (otpSent && otp.length < 6)
           }
         >
           {otpSent

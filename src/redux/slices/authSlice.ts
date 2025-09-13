@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit"; 
 
 interface AuthState {
   isAuthenticated: boolean;
@@ -19,7 +19,7 @@ const authSlice = createSlice({
     },
     logout: (state) => {
       state.isAuthenticated = false;
-      localStorage.clear();
+      localStorage.clear(); 
     },
   },
 });

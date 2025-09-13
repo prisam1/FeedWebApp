@@ -17,7 +17,7 @@ export interface User {
     email: string;
   }
 
-  export interface FormData {
+  export interface ResetFormInputs {
     email: string;
     otp: string;
   }
@@ -41,3 +41,9 @@ export interface User {
     status: string;
   }
  
+  export interface StrengthBarType {
+  level: number;
+  label: string;
+  barColor: string;
+  textColor: string;
+  }

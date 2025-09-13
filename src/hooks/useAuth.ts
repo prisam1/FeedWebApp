@@ -20,6 +20,7 @@ import {
   logout as logoutAction,
 } from "../redux/slices/authSlice";
 import { User } from "../types/types";
+import { persistor } from "../redux/store";
 
 
 export const useRegister = () => {

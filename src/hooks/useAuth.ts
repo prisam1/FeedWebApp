@@ -19,8 +19,7 @@ import {
   loginSuccess as loginAction,
   logout as logoutAction,
 } from "../redux/slices/authSlice";
-import { User } from "../types/types";
-import { persistor } from "../redux/store";
+import { User } from "../types/types"; 
 
 
 export const useRegister = () => {

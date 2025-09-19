@@ -5,7 +5,7 @@ import {
 } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { AuthSelector } from "../redux/slices/authSlice";
-import { protectedRoutes } from "../services/ProtectedRoutes";
+import { protectedRoutes } from "./ProtectedRoutes";
 import { unprotectedRoutes } from "./UnProtectedRoutes";
 import ErrorBoundary from "../components/ErrorBoundary";
 

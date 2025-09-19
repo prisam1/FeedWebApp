@@ -11,21 +11,19 @@ export const Home = () => {
       <div className="mb-8 mt-20 flex gap-4 bg-white shadow-md rounded-full px-4 py-2">
         <button
           onClick={() => setActiveTab("feed")}
-          className={`px-6 py-2 rounded-full text-sm font-semibold transition-all duration-300 ${
-            activeTab === "feed"
-              ? "bg-blue-600 text-white shadow-md"
-              : "text-gray-700 hover:bg-blue-100"
-          }`}
+          className={`px-6 py-2 rounded-full text-sm font-semibold transition-all duration-300 ${activeTab === "feed"
+            ? "bg-blue-600 text-white shadow-md"
+            : "text-gray-700 hover:bg-blue-100"
+            }`}
         >
           Social Feed
         </button>
         <button
           onClick={() => setActiveTab("tasks")}
-          className={`px-6 py-2 rounded-full text-sm font-semibold transition-all duration-300 ${
-            activeTab === "tasks"
-              ? "bg-purple-600 text-white shadow-md"
-              : "text-gray-700 hover:bg-purple-100"
-          }`}
+          className={`px-6 py-2 rounded-full text-sm font-semibold transition-all duration-300 ${activeTab === "tasks"
+            ? "bg-purple-600 text-white shadow-md"
+            : "text-gray-700 hover:bg-purple-100"
+            }`}
         >
           Task Board
         </button>

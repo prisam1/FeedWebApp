@@ -3,26 +3,33 @@ import { useNavigate } from "react-router-dom";
 import { useLogout } from "../hooks/useAuth";
 import { useSelector } from "react-redux";
 import { UserSelector } from "../redux/slices/userSlice";
+import { useState } from "react";
+import { LogoutConfirmationModal } from "../components/modal/LogoutConfirmationModal";
 
 export const Header = () => {
   const navigate = useNavigate();
-
   const { handleLogout } = useLogout();
-
   const user = useSelector(UserSelector);
 
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const onConfirmLogout = () => {
+    handleLogout();
+    setIsModalOpen(false);
+  };
+
   return (
-    <div className="flex items-center justify-between xl:gap-20 lg:px-10 px-4 h-20 w-full bg-purple-700 border-b shadow-md">
+    <div className="flex items-center justify-between xl:gap-20 lg:px-10 px-4 h-20 w-full bg-purple-700 shadow-2xl">
       <div className="flex items-center gap-2 xl:gap-8">
         <button
           onClick={() => navigate("/home")}
           className="flex h-14 w-14 justify-center items-center border-2 rounded-full"
         >
-          <User className="w-7 h-7" />
+          <User className="w-7 h-7 text-white" />
         </button>
 
-        <span className="font-bold lg:text-2xl text-xs">Hi,</span>
-        <span className="font-bold lg:text-2xl text-xs">
+        <span className="font-bold lg:text-2xl text-xs text-orange-200">Hi,</span>
+        <span className="font-bold lg:text-2xl text-xs text-orange-200">
           {user?.name?.toUpperCase()?.substring(0, 24)}
         </span>
       </div>
@@ -31,18 +38,24 @@ export const Header = () => {
           className="flex items-center gap-2 cursor-pointer"
           onClick={() => navigate("/reset-forgot-password")}
         >
-          <Lock className="lg:w-6 lg:h-6 w-4 h-4" />
-          <p className="font-medium lg:text-base text-xs">Reset Password</p>
+          <Lock className="lg:w-6 lg:h-6 w-4 h-4 text-white" />
+          <p className="font-medium lg:text-base text-xs text-white">Reset Password</p>
         </button>
 
         <button
-          onClick={() => handleLogout()}
+          onClick={() => setIsModalOpen(true)}
           className="flex items-center gap-2 cursor-pointer"
         >
-          <LogOut className="lg:w-6 lg:h-6 w-4 h-4" />
-          <p className="font-medium lg:text-base text-xs">Sign out</p>
+          <LogOut className="lg:w-6 lg:h-6 w-4 h-4 text-white" />
+          <p className="font-medium lg:text-base text-xs text-white">Sign out</p>
         </button>
       </div>
+
+      <LogoutConfirmationModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onConfirm={onConfirmLogout}
+      />
     </div>
   );
 };

@@ -2,10 +2,9 @@ import { Navigate, Outlet } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { AuthSelector } from "../redux/slices/authSlice";
 import { Home } from "../pages/Home";
-import { Header } from "../layout/Header";
-import { Footer } from "../layout/Footer";
 import { ForgotPassword } from "../pages/ForgotPassword";
 import { SetNewPassword } from "../pages/SetNewPassword";
+import Layout from "../layout";
 
 const ProtectedRoutes = () => {
   const auth = useSelector(AuthSelector);
@@ -16,13 +15,9 @@ const ProtectedRoutes = () => {
   }
 
   return (
-    <>
-      <div className="fixed top-0 left-0 lg:w-full w-full z-50">
-        <Header />
-      </div>
+    <Layout>
       <Outlet />
-      <Footer />
-    </>
+    </Layout>
   );
 };
 

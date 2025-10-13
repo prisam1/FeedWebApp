@@ -96,6 +96,7 @@ export const ResetPassword = ({ otpSent, setOtpSent }: ResetPasswordProps) => {
                 type="email"
                 placeholder="Enter your email"
                 className="flex h-12 w-full mt-1 rounded-md border border-input px-5 py-4 text-sm"
+                disabled={isAuthenticated}
               />
               {errors.email && (
                 <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>

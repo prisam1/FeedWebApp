@@ -5,6 +5,9 @@ const jwt = require("jsonwebtoken");
 const { setAuthCookies } = require("../helper/auth.helper");
 const { generateRandomSixDigit } = require("../helper/generateOtp.helper");
 const { sendMail } = require("../utils/nodemailer");
+const { OAuth2Client } = require("google-auth-library");
+
+const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
 //Create User
 exports.register = async (req, res) => {
@@ -91,9 +94,9 @@ exports.forgotPassword = async (req, res) => {
     // Send the OTP via email
     await sendMail(email, otp);
 
-    res.json({ message: "Password reset email sent successfully" });
+    res.status(200).json({ message: "Password reset email sent successfully" });
   } catch (error) {
-    console.error("Error in forgotPassword:", error);
+    // console.error("Error in forgotPassword:", error);
     res
       .status(500)
       .json({ error: "An error occurred. Please try again later." });
@@ -120,7 +123,7 @@ exports.forgotPasswordOTP = async (req, res) => {
 
     res.status(200).json({ message: "OTP verified successfully" });
   } catch (error) {
-    console.error("Error in forgotPasswordOTP:", error);
+    //console.error("Error in forgotPasswordOTP:", error);
     res
       .status(500)
       .json({ error: "An error occurred. Please try again later." });
@@ -147,6 +150,45 @@ exports.setNewPassword = async (req, res) => {
     res
       .status(500)
       .json({ error: "An error occurred. Please try again later." });
+  }
+};
+
+exports.verifyGoogleToken = async (req, res) => {
+  const { credential } = req.body;
+
+  try {
+    const ticket = await client.verifyIdToken({
+      idToken: credential,
+      audience: process.env.GOOGLE_CLIENT_ID,
+    });
+
+    const payload = ticket.getPayload();
+
+    const { sub, email, name } = payload;
+
+    let user = await User.findOne({ email });
+    if (!user) {
+      user = await User.create({
+        googleId: sub,
+        email,
+        name,
+        password: null,
+      });
+    }
+
+    const token = jwt.sign(
+      { id: user._id, email: user.email, name: user.name },
+      process.env.JWT_SECRET,
+      { expiresIn: "1d" }
+    );
+
+    const isMobile = req.headers["user-agent"].includes("Mobi");
+    setAuthCookies(res, token, isMobile);
+
+    res.status(200).json({ message: "Login successful", user });
+  } catch (err) {
+    // console.error("Google token verify error:", err);
+    res.status(401).json({ error: "Invalid Google Token" });
   }
 };
 
@@ -214,17 +256,6 @@ exports.googleCallback = async (req, res) => {
 
 // Get the current user
 exports.getCurrentUser = async (req, res) => {
-  // try {
-  //   const token = req.cookies.access_token;
-  //   if (!token) return res.status(401).json({ error: "Not Authenticated" });
-
-  //   const decoded = jwt.verify(token, process.env.JWT_SECRET);
-  //   const user = await User.findById(decoded.id).select("-password");
-
-  //   res.status(200).json(user);
-  // } catch (err) {
-  //   res.status(401).json({ error: "Invalid Token" });
-  // }
   res.status(200).json({ user: req.user });
 };
 

@@ -12,7 +12,7 @@ const {
   googleLogout,
 } = require("../controllers/authController");
 
-const { verifyGoogleToken } = require("../config/googleVerificationToken");
+const { verifyGoogleToken } = require("../controllers/authController");
 const authMiddleware = require("../middleware/authMiddleware");
 const passport = require("passport");
 

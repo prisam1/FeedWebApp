@@ -113,7 +113,7 @@ export const Feed = () => {
             className="flex flex-col border-[1px] px-4 border-gray-300 rounded-md mt-3"
           >
             <div className="py-1 font-bold">
-              {user?.name?.substring(0, 24)}
+              {post?.userId.name?.substring(0, 24)}
             </div>
 
             <img

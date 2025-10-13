@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { ResetPassword } from "../components/forgotPassword/forgotPasswordForm";
 import { useState } from "react";
-import { ArrowLeft, ChevronLeft, ChevronsLeftIcon } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 
 export const ForgotPassword = () => {
 

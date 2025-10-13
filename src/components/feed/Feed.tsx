@@ -2,8 +2,6 @@ import { ChangeEvent, FormEvent, useState } from "react";
 import { usePosts, useCreatePost } from "../../hooks/useFeed";
 import { ImagePlus } from "lucide-react";
 import { toast } from "sonner";
-import { useSelector } from "react-redux";
-import { UserSelector } from "../../redux/slices/userSlice";
 
 export const Feed = () => {
   const [caption, setCaption] = useState<string>("");
@@ -12,8 +10,6 @@ export const Feed = () => {
 
   const { posts, loading, fetchPosts } = usePosts();
   const { handleCreatePost, loading: createPostLoading } = useCreatePost(fetchPosts);
-
-  const user = useSelector(UserSelector);
 
   const addPost = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();

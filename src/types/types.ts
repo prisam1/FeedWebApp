@@ -9,6 +9,10 @@ export interface Task {
     _id: string;
     photoUrl: string;
     caption: string;
+    userId:{
+      _id:string;
+      name:string;
+    }
   }
    
 export interface User {

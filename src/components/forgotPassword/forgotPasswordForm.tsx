@@ -19,7 +19,7 @@ export const ResetPassword = ({ otpSent, setOtpSent }: ResetPasswordProps) => {
   const user = useSelector(UserSelector);
 
   const isAuthenticated = auth.isAuthenticated ?? false;
-  const resetPassword = user ? user.email : "";
+  const resetPassword = user && isAuthenticated ? user.email : "";
 
   const {
     control,
@@ -96,7 +96,6 @@ export const ResetPassword = ({ otpSent, setOtpSent }: ResetPasswordProps) => {
                 type="email"
                 placeholder="Enter your email"
                 className="flex h-12 w-full mt-1 rounded-md border border-input px-5 py-4 text-sm"
-                disabled={resetPassword.length > 0}
               />
               {errors.email && (
                 <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>

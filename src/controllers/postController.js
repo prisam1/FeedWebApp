@@ -26,8 +26,8 @@ exports.createPost = async (req, res) => {
 //Get Post
 exports.getPosts = async (req, res) => {
   try {
-    const posts = await Post.find();
-    res.json(posts);
+    const posts = await Post.find().populate("userId", "name");
+    res.status(200).json(posts);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }

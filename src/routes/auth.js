@@ -21,23 +21,27 @@ const router = express.Router();
 //------------------------------------
 router.post("/register", register);
 router.post("/login", login);
-router.post("/logout", logout);
 router.post("/forgot-password", forgotPassword);
 router.post("/forgot-password-otp", forgotPasswordOTP);
 router.post("/set-password", setNewPassword);
 router.get("/user", authMiddleware, user);
 
 //Google for authentication
-
 router.get("/current-user", authMiddleware, getCurrentUser);
 router.post("/google/verify-token", verifyGoogleToken);
-router.get("/google", passport.authenticate("google", { scope: ["profile", "email"] }));
-
+router.get(
+  "/google",
+  passport.authenticate("google", { scope: ["profile", "email"] })
+);
 router.get(
   "/google/callback",
-  passport.authenticate("google", { session: false, failureRedirect: "/login" }),
+  passport.authenticate("google", {
+    session: false,
+    failureRedirect: "/login",
+  }),
   oauthSuccess
 );
-router.get("/googleLogout", googleLogout);
+
+router.post("/logout", logout);
 
 module.exports = router;

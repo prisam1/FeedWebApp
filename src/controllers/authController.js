@@ -5,7 +5,6 @@ const jwt = require("jsonwebtoken");
 const { setAuthCookies } = require("../helper/auth.helper");
 const { generateRandomSixDigit } = require("../helper/generateOtp.helper");
 const { sendMail } = require("../utils/nodemailer");
-const passport = require("passport");
 
 //Create User
 exports.register = async (req, res) => {
@@ -60,12 +59,6 @@ exports.login = async (req, res) => {
   } catch (err) {
     res.status(400).json({ error: err.message });
   }
-};
-
-//logout User
-exports.logout = async (req, res) => {
-  res.clearCookie("access_token");
-  return res.status(200).json({ message: "Logged out successfully" });
 };
 
 //get User
@@ -125,7 +118,7 @@ exports.forgotPasswordOTP = async (req, res) => {
     user.otp = null;
     await user.save();
 
-    res.json({ message: "OTP verified successfully" });
+    res.status(200).json({ message: "OTP verified successfully" });
   } catch (error) {
     console.error("Error in forgotPasswordOTP:", error);
     res
@@ -149,9 +142,8 @@ exports.setNewPassword = async (req, res) => {
     user.password = hashedPassword;
     await user.save();
 
-    res.json({ message: "Password Changed successfully" });
+    res.status(200).json({ message: "Password Changed successfully" });
   } catch (error) {
-    console.error("Error:", error);
     res
       .status(500)
       .json({ error: "An error occurred. Please try again later." });
@@ -171,7 +163,9 @@ exports.oauthSuccess = async (req, res) => {
 
     return setAuthCookies(res, token, isMobile);
   } catch (error) {
-    return res.status(500).json({ error: "OAuth error", message: error.message });
+    return res
+      .status(500)
+      .json({ error: "OAuth error", message: error.message });
   }
 };
 
@@ -188,7 +182,7 @@ exports.googleCallback = async (req, res) => {
 
     const userEmail = email && email.length > 0 ? email[0].value : null;
 
-    console.log("Google OAuth User:", req.user);
+    // console.log("Google OAuth User:", req.user);
 
     if (!email) {
       return res.status(400).json({ error: "Email not provided by Google" });
@@ -212,32 +206,32 @@ exports.googleCallback = async (req, res) => {
 
     // res.status(200).json({ message: "Login successful", access_token, token });
     res.redirect(`${process.env.FRONT_URL}/home`);
-   
   } catch (err) {
-    console.error("Google OAuth Callback Error:", err);
+    // console.error("Google OAuth Callback Error:", err);
     res.status(500).json({ error: "Internal Server Error" });
   }
 };
 
-// Get the current user for google Oauth
+// Get the current user
 exports.getCurrentUser = async (req, res) => {
-  try {
-    const token = req.cookies.access_token;
-    if (!token) return res.status(401).json({ error: "Not Authenticated" });
+  // try {
+  //   const token = req.cookies.access_token;
+  //   if (!token) return res.status(401).json({ error: "Not Authenticated" });
 
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    const user = await User.findById(decoded.id).select("-password");
+  //   const decoded = jwt.verify(token, process.env.JWT_SECRET);
+  //   const user = await User.findById(decoded.id).select("-password");
 
-    res.status(200).json(user);
-  } catch (err) {
-    res.status(401).json({ error: "Invalid Token" });
-  }
+  //   res.status(200).json(user);
+  // } catch (err) {
+  //   res.status(401).json({ error: "Invalid Token" });
+  // }
+  res.status(200).json({ user: req.user });
 };
 
 // Logout the user
-exports.googleLogout = async (req, res) => {
+exports.logout = async (req, res) => {
   try {
-    await req.logout();
+    //await req.logout();
     res.clearCookie("access_token");
     res.status(200).json({ message: "Logout successful" });
   } catch (error) {
